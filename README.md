@@ -1,11 +1,11 @@
 # GeoShapeHelper
 
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/W4Q021V4U0)
+
 A **100% client-side** web app for editing administrative-boundary GeoJSON (provinces, districts, and
 similar) on top of OpenStreetMap. Upload one or more polygon files, run **topology-safe** geoprocessing
 (simplify, clean, smooth, remove islands, merge neighbors), then export the result. No backend,
 no uploads to any server; everything runs in your browser and deploys as static files to GitHub Pages.
-
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/W4Q021V4U0)
 
 > **The hard part it solves:** keeping **no gaps and no overlaps** between adjacent polygons.
 > Every operation runs on **shared-boundary topology** ([mapshaper](https://github.com/mbloch/mapshaper)),
@@ -79,11 +79,11 @@ two adjacent provinces, with a tiny offshore island on the southern one to test 
   ([`scripts/patch-mapshaper.mjs`](scripts/patch-mapshaper.mjs)) makes it browser-safe: it rewrites
   mapshaper's aliased `require$1(...)` calls back to plain `require(...)` so the bundler can resolve
   its geometry deps, stubs out the Node-only/format packages it never needs here (zip, sqlite,
-  KML, HTTP, DBF encodings), and points `flatbush`/`kdbush` at their CommonJS builds. This runs
-  automatically on `npm install` / `npm ci`. Separately, the worker imports
-  [`src/worker/nodeShims.ts`](src/worker/nodeShims.ts) first, which fills in the few `process.*`
-  fields mapshaper reads (it isn't detected as a browser inside a Web Worker). The worker never
-  touches a real filesystem - all I/O is in-memory.
+  KML, HTTP, DBF encodings), and points `flatbush`/`kdbush` at their CommonJS builds. It also
+  guards the one unguarded `process.execArgv` read mapshaper makes at startup, since the worker's
+  bundled `process` shim omits that field (mapshaper isn't detected as a browser inside a Web
+  Worker). This runs automatically on `npm install` / `npm ci`. The worker never touches a real
+  filesystem - all I/O is in-memory.
 - Very large files: the live preview runs at full resolution here; for huge inputs you may prefer to
   simplify before exploring. Province-scale datasets are comfortable.
 

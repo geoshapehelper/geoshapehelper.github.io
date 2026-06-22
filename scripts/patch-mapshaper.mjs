@@ -91,6 +91,23 @@ for (const [pkg, cjs] of [
   }
 }
 
+// In a Web Worker mapshaper's bare `process` resolves to the bundler's
+// `process/browser` shim, which omits `execArgv` (the dev prebundle happens to
+// resolve it to the global, which is why this only bit the production build).
+// mapshaper reads it once, unguarded, in printStartupMessages() on the first
+// command - `process.execArgv.find(...)` then throws "Cannot read properties of
+// undefined (reading 'find')" and kills the worker. Guard the read; the other
+// process.* gaps are either guarded (hrtime), string-coerce safely (pid), or
+// live only in the never-reached subprocess path (stdout/stderr/execPath).
+{
+  const needle = 'process.execArgv.find(';
+  const count = src.split(needle).length - 1;
+  if (count > 0) {
+    src = src.split(needle).join('(process.execArgv || []).find(');
+    total += count;
+  }
+}
+
 if (total > 0) writeFileSync(file, src);
 
 if (!criticalDone) {

@@ -1,7 +1,6 @@
 /// <reference lib="webworker" />
 // Geoprocessing worker. All heavy lifting (mapshaper topology ops, turf area /
 // adjacency, Chaikin smoothing) runs here so the map + UI stay responsive.
-import './nodeShims'; // must run before mapshaper: fills in missing process.* fields
 import mapshaper from 'mapshaper';
 import area from '@turf/area';
 import bbox from '@turf/bbox';
