@@ -68,33 +68,6 @@ two adjacent provinces, with a tiny offshore island on the southern one to test 
 6. Select two non-adjacent features and Merge: the app explains the selection is not connected.
 7. **Export**, then re-import the file: it renders identically.
 
-## Deploy to GitHub Pages
-
-The build uses `base: './'` (relative asset paths), so it works at any URL - a project page like
-`https://<user>.github.io/<repo>/` or a custom domain - **without** hardcoding the repo name.
-A `.nojekyll` file is included so Pages serves the asset folders as-is.
-
-### Option A - GitHub Actions (recommended)
-
-A workflow is provided at [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml).
-
-1. Push this repository to GitHub.
-2. In the repo, go to **Settings → Pages → Build and deployment → Source** and choose
-   **GitHub Actions**.
-3. Push to `main` (or run the workflow manually). It builds and publishes `dist/`.
-   The live URL appears in the workflow's **deploy** job summary.
-
-### Option B - `docs/` folder
-
-If you prefer no Actions:
-
-```bash
-npm run build
-rm -rf docs && mv dist docs   # or: npm run build -- --outDir docs
-git add docs && git commit -m "Build site" && git push
-```
-
-Then **Settings → Pages → Source → Deploy from a branch**, branch `main`, folder `/docs`.
 
 ## Notes & limitations
 
