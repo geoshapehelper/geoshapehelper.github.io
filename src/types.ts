@@ -64,7 +64,7 @@ export type MergePropsStrategy = 'largest' | 'first';
 /** A committed step in the editable pipeline. */
 export interface Operation {
   id: string;
-  type: 'import' | 'simplify' | 'clean' | 'islands' | 'smooth' | 'merge';
+  type: 'import' | 'simplify' | 'clean' | 'islands' | 'smooth' | 'merge' | 'delete';
   label: string;
   report?: string[];
   /** Snapshot of the dataset *after* this operation ran. */

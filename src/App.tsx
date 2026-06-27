@@ -35,6 +35,7 @@ import {
   type MergePropsStrategy,
   type Operation,
   type PolyGeom,
+  type ShapeFC,
   type ShapeFeature,
   type SimplifyParams,
   type SmoothParams,
@@ -283,6 +284,24 @@ export default function App() {
     [client, state, commit, clearPreview, addLog],
   );
 
+  const onDelete = useCallback(() => {
+    const sel = new Set(state.selectedGids);
+    if (sel.size === 0) return;
+    const src = workingFC(state);
+    const resultFC: ShapeFC = {
+      type: 'FeatureCollection',
+      features: src.features.filter((f) => !sel.has(f.properties[GID])),
+    };
+    dispatch({ type: 'SET_SELECTED', gids: [] });
+    setNotContiguous(null);
+    // Intentionally no clean: a basic delete leaves the hole where the feature was.
+    commit({
+      type: 'delete',
+      label: `Delete ${sel.size} feature${sel.size === 1 ? '' : 's'}`,
+      resultFC,
+    });
+  }, [state, commit]);
+
   const onCleanRun = useCallback(async () => {
     clearPreview();
     try {
@@ -471,6 +490,7 @@ export default function App() {
             notContiguous={notContiguous}
             busy={busy}
             onMerge={onMerge}
+            onDelete={onDelete}
             onClear={() => onSelectionChange([])}
           />
         </main>

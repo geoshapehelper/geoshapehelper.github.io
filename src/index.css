@@ -149,6 +149,18 @@ code {
 .btn.full {
   width: 100%;
 }
+.btn.danger {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+.btn.danger:hover:not(:disabled) {
+  background: var(--danger);
+  border-color: var(--danger);
+  color: #fff;
+}
+.selection-panel .btn.danger {
+  margin-top: 8px;
+}
 .topbar .btn {
   background: #1e293b;
   border-color: #334155;

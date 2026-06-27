@@ -19,6 +19,7 @@ interface SelectionPanelProps {
   notContiguous: MergeNotContiguous | null;
   busy: boolean;
   onMerge: (newName: string, strategy: MergePropsStrategy, allowNonContiguous: boolean) => void;
+  onDelete: () => void;
   onClear: () => void;
 }
 
@@ -27,6 +28,7 @@ export default function SelectionPanel({
   notContiguous,
   busy,
   onMerge,
+  onDelete,
   onClear,
 }: SelectionPanelProps) {
   const [name, setName] = useState('');
@@ -127,6 +129,10 @@ export default function SelectionPanel({
       {selected.length < 2 && (
         <p className="muted small">Shift/Ctrl-click to add more features, then merge.</p>
       )}
+
+      <button className="btn danger full" disabled={busy} onClick={onDelete}>
+        Delete {selected.length} feature{selected.length === 1 ? '' : 's'}
+      </button>
     </div>
   );
 }

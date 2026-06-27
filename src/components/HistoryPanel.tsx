@@ -13,6 +13,7 @@ const OP_ICON: Record<Operation['type'], string> = {
   islands: '⌗',
   smooth: '◠',
   merge: '⧉',
+  delete: '🗑',
 };
 
 export default function HistoryPanel({ ops, cursor, onJump }: HistoryPanelProps) {
